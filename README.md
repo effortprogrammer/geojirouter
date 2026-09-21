@@ -5,6 +5,27 @@
 거지라우터는 결제·충전 없이 사용할 수 있는 무료 모델 경로를 모아
 로컬 OpenAI 호환 API로 제공하는 게이트웨이입니다.
 
+## 설치
+
+```sh
+curl -fsSL https://geojirouter.vercel.app/i | sh
+```
+
+`bun`이 없으면 같이 설치하고, 소스를 받아 빌드한 뒤 `geoji` 명령을 `~/.geoji`에
+설치합니다. `~/.local/bin` 처럼 이미 `PATH`에 있는 디렉터리를 찾으면 심링크를
+걸고, 못 찾으면 추가할 `PATH` 한 줄을 알려줍니다.
+
+```sh
+geoji init      # 로컬 암호화 저장소 생성
+geoji doctor    # 상태 점검
+geoji catalog   # 무료 제공처 목록
+```
+
+설치 위치를 바꾸려면 `GEOJI_HOME`, 브랜치를 바꾸려면 `GEOJI_REF`,
+심링크 위치를 지정하려면 `GEOJI_BINDIR`를 환경변수로 넘깁니다.
+
+제거는 `rm -rf ~/.geoji` 와 심링크 삭제입니다.
+
 ## 현재 상태
 
 - 51개 제공처를 2026-09-21 기준으로 기록했습니다.
@@ -47,10 +68,10 @@ bun src/cli.ts serve --host 127.0.0.1 --port 18473
 패키지를 설치한 뒤 사용자별 암호화 저장소를 만들고 상태를 확인합니다.
 
 ```sh
-gateway init --json
-gateway doctor --json
-gateway status --json
-gateway env --json
+geoji init --json
+geoji doctor --json
+geoji status --json
+geoji env --json
 ```
 
 기본 저장 위치는 `~/.everyone-gateway`이며 `GATEWAY_HOME`으로 바꿀 수 있습니다.
@@ -81,11 +102,11 @@ bun src/cli.ts serve --host 127.0.0.1 --port 18473
 저장 키는 로컬 0600 키 파일로 암호화되며 `status`는 키를 출력하지 않습니다.
 
 ```sh
-gateway provider add --provider sambanova --key-env SAMBANOVA_API_KEY \
+geoji provider add --provider sambanova --key-env SAMBANOVA_API_KEY \
   --model DeepSeek-V3.1 --alias deepseek --free-model
 unset SAMBANOVA_API_KEY
-gateway status --json
-GATEWAY_TOKEN='local-client-token' gateway serve --host 127.0.0.1 --port 18473
+geoji status --json
+GATEWAY_TOKEN='local-client-token' geoji serve --host 127.0.0.1 --port 18473
 ```
 
 `--host`는 `127.0.0.1`만 허용하고, `GATEWAY_TOKEN`이 없으면 서버를 시작하지 않습니다.
@@ -97,7 +118,7 @@ SambaNova, OpenRouter `:free`, Gemini Free-tier 모델입니다. 먼저 제공�
 export GATEWAY_CONFIRM_FREE=1
 export GATEWAY_CONFIRM_COMMERCIAL=1
 export OPENROUTER_API_KEY='...'
-gateway provider add --provider openrouter --key-env OPENROUTER_API_KEY \
+geoji provider add --provider openrouter --key-env OPENROUTER_API_KEY \
   --model openrouter/free --alias openrouter-free --free-model
 unset OPENROUTER_API_KEY
 ```
@@ -107,7 +128,7 @@ selected account and model are on the Free tier:
 
 ```sh
 export GEMINI_API_KEY='...'
-gateway provider add --provider gemini --key-env GEMINI_API_KEY \
+geoji provider add --provider gemini --key-env GEMINI_API_KEY \
   --model gemini-2.5-flash --alias gemini --free-model
 unset GEMINI_API_KEY
 ```

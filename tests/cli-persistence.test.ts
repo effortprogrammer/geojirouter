@@ -68,8 +68,8 @@ test("init creates an empty portable home and actionable next commands", async (
 
   expect(result.status).toBe("initialized");
   expect(result.next).toEqual([
-    "gateway onboard --provider sambanova --browser aside --json",
-    "gateway provider add --provider sambanova --key-env SAMBANOVA_API_KEY --model DeepSeek-V3.1 --alias deepseek --free-model",
+    "geoji onboard --provider sambanova --browser aside --json",
+    "geoji provider add --provider sambanova --key-env SAMBANOVA_API_KEY --model DeepSeek-V3.1 --alias deepseek --free-model",
   ]);
 });
 

@@ -5,7 +5,7 @@
   "type": "module",
   "license": "MIT",
   "engines": { "bun": ">=1.3.0" },
-  "bin": { "gateway": "./dist/cli.js" },
+  "bin": { "geoji": "./dist/cli.js" },
   "exports": { ".": "./src/index.ts" },
   "files": ["dist", "src", "data", "README.md", "LICENSE"],
   "scripts": {

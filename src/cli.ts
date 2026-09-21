@@ -20,15 +20,15 @@ function json(value: unknown): void {
 }
 
 function help(): void {
-  console.log(`gateway init [--json]
-gateway doctor [--json]
-gateway status --json
-gateway env --json
-gateway catalog --json
-gateway estimate --json
-gateway serve --host 127.0.0.1 --port 18473
-gateway provider add --provider openrouter --key-env OPENROUTER_API_KEY --model openrouter/free --free-model
-gateway onboard --provider sambanova --browser aside --json
+  console.log(`geoji init [--json]
+geoji doctor [--json]
+geoji status --json
+geoji env --json
+geoji catalog --json
+geoji estimate --json
+geoji serve --host 127.0.0.1 --port 18473
+geoji provider add --provider openrouter --key-env OPENROUTER_API_KEY --model openrouter/free --free-model
+geoji onboard --provider sambanova --browser aside --json
 `);
 }
 
@@ -231,8 +231,8 @@ async function main(): Promise<void> {
         home,
         routes: state.routes().length,
         next: [
-          "gateway onboard --provider sambanova --browser aside --json",
-          "gateway provider add --provider sambanova --key-env SAMBANOVA_API_KEY --model DeepSeek-V3.1 --alias deepseek --free-model",
+          "geoji onboard --provider sambanova --browser aside --json",
+          "geoji provider add --provider sambanova --key-env SAMBANOVA_API_KEY --model DeepSeek-V3.1 --alias deepseek --free-model",
         ],
       } as const;
       if (process.argv.includes("--json")) json(result);
@@ -260,7 +260,7 @@ async function main(): Promise<void> {
         eligibility: route.eligibility,
         reason: route.reason,
       })),
-      next: !existsSync(home) ? ["gateway init"] : [],
+      next: !existsSync(home) ? ["geoji init"] : [],
     };
     if (process.argv.includes("--json")) json(result);
     else {

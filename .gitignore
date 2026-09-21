@@ -1,0 +1,8 @@
+node_modules/
+dist/
+*.tgz
+.gateway/
+*.sqlite*
+.env
+.omo/evidence/
+artifacts/

@@ -70,6 +70,33 @@ describe("local zero-cost gateway", () => {
     expect(calls[0]?.headers.get("authorization")).toBe("Bearer upstream-secret-must-not-leak");
   });
 
+  test("pins OpenRouter upstream calls to zero price without fallback", async () => {
+    const calls: Request[] = [];
+    const app = createGateway({
+      token,
+      routes: [{ ...route, provider: "openrouter", baseUrl: "https://openrouter.invalid/v1" }],
+      fetchImpl: async (input, init) => {
+        calls.push(new Request(input, init));
+        return Response.json({ choices: [] });
+      },
+    });
+    const response = await app.request("http://localhost/v1/chat/completions", {
+      method: "POST",
+      headers: { authorization: `Bearer ${token}`, "content-type": "application/json" },
+      body: JSON.stringify({
+        model: "deepseek",
+        messages: [{ role: "user", content: "Reply OK" }],
+        max_tokens: 8,
+      }),
+    });
+    const body = await calls[0]?.json();
+    expect(response.status).toBe(200);
+    expect(body.provider).toEqual({
+      max_price: { prompt: 0, completion: 0, request: 0 },
+      allow_fallbacks: false,
+    });
+  });
+
   test("returns no-free-capacity after a route reservation is exhausted", async () => {
     const app = createGateway({
       token,

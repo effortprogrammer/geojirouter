@@ -113,6 +113,18 @@ export function createGateway(options: GatewayOptions) {
       const controller = new AbortController();
       c.req.raw.signal.addEventListener("abort", () => controller.abort(), { once: true });
       try {
+        const upstreamBody = {
+          ...parsed.data,
+          model: route.model,
+          ...(route.provider === "openrouter"
+            ? {
+                provider: {
+                  max_price: { prompt: 0, completion: 0, request: 0 },
+                  allow_fallbacks: false,
+                },
+              }
+            : {}),
+        };
         const upstream = await fetchImpl(`${route.baseUrl}/chat/completions`, {
           method: "POST",
           headers: {
@@ -120,7 +132,7 @@ export function createGateway(options: GatewayOptions) {
             "content-type": "application/json",
             accept: parsed.data.stream === true ? "text/event-stream" : "application/json",
           },
-          body: JSON.stringify({ ...parsed.data, model: route.model }),
+          body: JSON.stringify(upstreamBody),
           signal: controller.signal,
         });
         if (upstream.ok) {

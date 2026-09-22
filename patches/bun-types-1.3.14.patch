@@ -1,0 +1,18 @@
+diff --git a/globals.d.ts b/globals.d.ts
+--- a/globals.d.ts
++++ b/globals.d.ts
+@@ -232,1 +232,1 @@
+-  encodeInto(src?: string, dest?: Bun.BufferSource): import("node:util").TextEncoderEncodeIntoResult;
++  encodeInto(src?: string, dest?: Bun.BufferSource): import("node:util").EncodeIntoResult;
+diff --git a/overrides.d.ts b/overrides.d.ts
+--- a/overrides.d.ts
++++ b/overrides.d.ts
+@@ -322,1 +322,1 @@
+-  interface BunConnectionOptions extends Omit<ConnectionOptions, "key" | "ca" | "tls" | "cert"> {
++  interface BunConnectionOptions extends Omit<import("node:tls").ConnectionOptions, "key" | "ca" | "tls" | "cert"> {
+@@ -362,1 +362,1 @@
+-      | Array<string | Buffer | Bun.BunFile | NodeJS.TypedArray | KeyObject>
++      | Array<string | Buffer | Bun.BunFile | NodeJS.TypedArray | import("node:crypto").KeyObject>
+@@ -366,1 +366,1 @@
+-  function connect(options: BunConnectionOptions, secureConnectListener?: () => void): TLSSocket;
++  function connect(options: BunConnectionOptions, secureConnectListener?: () => void): import("node:tls").TLSSocket;
